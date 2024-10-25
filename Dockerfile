@@ -1,18 +1,13 @@
-# Step i: Use Ubuntu as the base image
-# Use the official Python image as the base image
-FROM python:3.9-slim
+# Use ubuntu as the base image
+FROM ubuntu:latest
 
-# Set the working directory in the container
-WORKDIR /opt/app
+# Install python3, python3-pip and python3-flask
+RUN apt-get update && apt-get install -y python3 python3-pip
+RUN pip3 install Flask
 
-# Copy application files to the container
-COPY application.py .
+# Copy the application.py file to /opt/app
+COPY application.py /opt/app/
 
-# Install Flask
-RUN pip install --no-cache-dir flask
-
-# Set the environment variable for Flask
-ENV FLASK_APP=application.py
-
-# Specify the command to run on container start
+# Set environment variable and run Flask application
+ENV FLASK_APP=/opt/app/application.py
 CMD ["flask", "run", "--host=0.0.0.0"]
